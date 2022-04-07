@@ -23,8 +23,8 @@ const replySchema = new mongoose.Schema({
 function validateComment(comment){
     const schema = Joi.object({
         name: Joi.string().min(2).max(35).required(),
-        userComment: Joi.string.min(1).maxlength(255).required(),
-        videoId: Joi.string.min(1).maxlength(255).required(),
+        userComment: Joi.string().min(1).max(255).required(),
+        videoId: Joi.string().min(1).max(255).required(),
 
     })
     return schema.validate(comment);
