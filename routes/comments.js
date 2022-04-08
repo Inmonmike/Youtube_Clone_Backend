@@ -98,28 +98,6 @@ router.put("/:commentId/newReply", async (req, res)=>{
     }
 })
 
-
-//DELETE an exsiting comment
-//http://localhost:3011/api/comments/:commentId
-router.delete("/:commentId", async (req, res)=>{
-    try {
-        let comment = await Comment.findByIdAndDelete(req.params.commentId);
-        if (!comment)
-         return res
-         .status(400)
-         .send(`Product with Id of ${req.params.commentId} does not exist!`);
-
-         return res
-         .status(200)
-         .send(comment);        
-    } catch (error) {
-        return res
-        .status(500)
-        .send(`Internal Server Error: ${error}`);        
-    }
-})
-
-
 //POST a new comment
 //http://localhost:3011/api/comments
 router.post("/", async (req, res)=>{
