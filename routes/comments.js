@@ -1,4 +1,5 @@
 const {Comment, validateComment} = require("../models/comment")
+const {Reply, validateReply} = require("../models/reply");
 const express = require("express");
 const router = express.Router();
 
@@ -61,6 +62,35 @@ router.put("/:commentId", async (req, res)=>{
          return res
          .status(200)
          .send(comment);        
+    } catch (error) {
+        return res
+        .status(500)
+        .send(`Internal Server Error: ${error}`);        
+    }
+})
+//PUT an existing reply
+//http://localhost:3011/api/comments/:commentId/newReply
+router.put("/:commentId/newReply", async (req, res)=>{
+    try {
+        
+        let comment = await Comment.findById(req.params.commentId);
+        if (!comment)
+         return res
+         .status(400)
+         .send(`Product with Id of ${req.params.commentId} does not exist!`);
+
+         let newReply = new Reply({
+             name: req.body.name,
+             userComment: req.body.userComment
+         })
+         console.log(newReply)
+         comment.replies.push(newReply)
+         await comment.save()
+         return res
+         .status(201)
+         .send(comment)       
+
+   
     } catch (error) {
         return res
         .status(500)

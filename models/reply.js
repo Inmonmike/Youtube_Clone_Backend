@@ -1,7 +1,6 @@
 const mongoose = require("mongoose")
 const Joi = require("joi");
 const { string, number } = require("joi");
-const { commentSchema } = require("./comment");
 
 
 const replySchema = new mongoose.Schema({
@@ -9,11 +8,10 @@ const replySchema = new mongoose.Schema({
     userComment: {type: String, required: true, minlength: 1, maxlength: 255},
     likes: {type: Number, default: 0},
     dislikes: {type: Number, default: 0},
-    videoId: {type: [commentSchema], default: [] },
     dateAdded: { type: Date, default: Date.now()},
 });
 
-const Reply = mongoose.model("Relpy",replySchema);
+const Reply = mongoose.model("Reply",replySchema);
 
 function validateReply(reply) {
     const schema = Joi.object({
