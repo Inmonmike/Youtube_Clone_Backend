@@ -42,6 +42,8 @@ router.get("/:commentId", async (req, res)=>{
     }
 })
 
+
+
 //PUT an existing comment
 //http://localhost:3011/api/comments/:commentId
 router.put("/:commentId", async (req, res)=>{
@@ -68,6 +70,54 @@ router.put("/:commentId", async (req, res)=>{
         .send(`Internal Server Error: ${error}`);        
     }
 })
+
+//PUT an comment like
+//http://localhost:3011/api/comments/:commentId/commentLike
+router.put("/:commentId/commentLike", async (req, res)=>{
+    try {
+        let comment = await Comment.findById(req.params.commentId);
+        if (!comment)
+         return res
+         .status(400)
+         .send(`Comment with Id of ${req.params.commentId} does not exist!`);
+
+         comment.likes++;
+         await comment.save();
+
+         return res
+         .status(200)
+         .send(comment);        
+    } catch (error) {
+        return res
+        .status(500)
+        .send(`Internal Server Error: ${error}`);
+        
+    }
+})
+//PUT an comment dislike
+//http://localhost:3011/api/comments/:commentId/commentDisLike
+router.put("/:commentId/commentDisLike", async (req, res)=>{
+    try {
+        let comment = await Comment.findById(req.params.commentId);
+        if (!comment)
+         return res
+         .status(400)
+         .send(`Comment with Id of ${req.params.commentId} does not exist!`);
+
+         comment.dislikes++;
+         await comment.save();
+
+         return res
+         .status(200)
+         .send(comment);        
+    } catch (error) {
+        return res
+        .status(500)
+        .send(`Internal Server Error: ${error}`);
+        
+    }
+})
+
 //PUT an existing reply
 //http://localhost:3011/api/comments/:commentId/newReply
 router.put("/:commentId/newReply", async (req, res)=>{
@@ -77,7 +127,7 @@ router.put("/:commentId/newReply", async (req, res)=>{
         if (!comment)
          return res
          .status(400)
-         .send(`Product with Id of ${req.params.commentId} does not exist!`);
+         .send(`Comment with Id of ${req.params.commentId} does not exist!`);
 
          let newReply = new Reply({
              name: req.body.name,
