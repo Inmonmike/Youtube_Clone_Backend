@@ -23,15 +23,15 @@ router.get("/", async (req, res)=>{
     }
 })
 
-//GET a comment by id
-//http://localhost:3011/api/comments/:commentId
-router.get("/:commentId", async (req, res)=>{
+//GET a comment by videoid
+//http://localhost:3011/api/comments/:videoId
+router.get("/:videoId", async (req, res)=>{
     try {
-        let comment = await Comment.findById(req.params.commentId);
+        let comment = await Comment.find (req.params, {}, { _id: 0, videoId: 1});
         if (!comment)
             return res
             .status(400)
-            .send(`Product with Id of ${req.params.commentId} does not exist!`);
+            .send(`Comment with Id of ${req.params.videoId} does not exist!`);
         return res
         .status(200)
         .send(comment);       
